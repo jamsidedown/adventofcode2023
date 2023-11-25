@@ -27,3 +27,9 @@ setup.log
 
 # Local OPAM switch
 _opam/
+
+# Jetbrains
+.idea/
+
+# AoC inputs
+input/
