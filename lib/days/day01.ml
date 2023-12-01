@@ -23,7 +23,7 @@ let rec parse_string_ints (chars: char list) : char list =
     | 's' :: 'e' :: 'v' :: 'e' :: 'n' :: tail -> '7' :: parse_string_ints ('n' :: tail)
     | 'e' :: 'i' :: 'g' :: 'h' :: 't' :: tail -> '8' :: parse_string_ints ('t' :: tail)
     | 'n' :: 'i' :: 'n' :: 'e' :: tail -> '9' :: parse_string_ints ('e' :: tail)
-    | _ :: tail -> parse_string_ints tail
+    | _ :: tail -> parse_string_ints tail;;
 
 let first_and_last (lst: char list) : int option =
     let rec recurse (first: char) (last: char) (remaining: char list) : int =

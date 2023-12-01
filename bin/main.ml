@@ -4,6 +4,7 @@ module SolutionMap = Map.Make (String)
 
 let solutions = [
     ("1", Day01.run);
+    ("2", Day02.run);
 ]
 |> List.to_seq
 |> SolutionMap.of_seq
