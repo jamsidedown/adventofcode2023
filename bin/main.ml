@@ -15,7 +15,7 @@ let () =
     | _ :: [] ->
         (* run most recent day *)
         SolutionMap.to_list solutions
-        |> List_helpers.last
+        |> List.last
         |> (function
             | Some recent -> [fst recent]
             | None -> [])

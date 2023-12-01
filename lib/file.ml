@@ -13,7 +13,3 @@ let read_lines (filename: string) : string list =
             close_in file;
             [] in
     loop();;
-
-let parse_ints (filename: string) : int list =
-    read_lines filename
-    |> List.map int_of_string;;

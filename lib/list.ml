@@ -1,11 +1,10 @@
+include Stdlib.List
+
 let rec last (lst: 'a list) : 'a option =
     match lst with
     | [] -> None
     | [ last' ] -> Some last'
     | _ :: t -> last t;;
-
-let to_chars (s: string) : char list =
-    List.init (String.length s) (String.get s);;
 
 let rec choose (lst: 'a option list) : 'a list =
     match lst with
@@ -13,7 +12,10 @@ let rec choose (lst: 'a option list) : 'a list =
     | Some head :: tail -> head :: choose tail
     | None :: tail -> choose tail;;
 
-let rec sum (lst: int list) : int =
-    match lst with
-    | [] -> 0
-    | head :: tail -> head + sum tail;;
+let sum (lst: int list) : int =
+    let rec recurse (acc: int) (remaining: int list) : int =
+        match remaining with
+        | [] -> acc
+        | head :: tail -> recurse (acc + head) tail
+    in
+    recurse 0 lst;;

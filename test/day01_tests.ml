@@ -3,7 +3,7 @@ open Aoc23
 
 let can_convert_chars_to_int _ =
     let lst = ['1'; '2'] in
-    let converted = Day01.int_of_chars lst in
+    let converted = Int.of_chars lst in
     assert_equal converted 12;;
 
 let can_get_first_and_last_ints _ =
@@ -18,13 +18,13 @@ let can_sum_for_part_one _ =
 
 let can_parse_string_ints_from_chars _ =
     let line = "two1nine" in
-    let chars = List_helpers.to_chars line in
+    let chars = String.to_list line in
     let parsed = Day01.parse_string_ints chars in
     assert_equal parsed ['2'; '1'; '9'];;
 
 let can_parse_edge_case _ =
     let line = "xtwone3four" in
-    let chars = List_helpers.to_chars line in
+    let chars = String.to_list line in
     let parsed = Day01.parse_string_ints chars in
     assert_equal parsed ['2'; '1'; '3'; '4'];;
 
