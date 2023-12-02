@@ -61,14 +61,8 @@ let max_round (first: round) (second: round) : round =
     }
 
 let get_minumum_cubes (game: game) : round =
-    let rec recurse (current: round) (rounds: round list) : round =
-        match rounds with
-        | [] -> current
-        | head :: tail ->
-            let next = max_round current head in
-            recurse next tail
-    in
-    recurse { red=0; green=0; blue=0; } game.rounds;;
+    game.rounds
+    |> List.fold_left max_round { red=0; green=0; blue=0; };;
 
 let get_power (round: round) : int =
     round.red * round.green * round.blue;;
