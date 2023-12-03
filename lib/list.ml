@@ -19,3 +19,6 @@ let sum (lst: int list) : int =
         | head :: tail -> recurse (acc + head) tail
     in
     recurse 0 lst;;
+
+let[@tail_mod_cons] rec range (start: int) (stop: int) : int list =
+    if start > stop then [] else start :: range (start + 1) stop;;
