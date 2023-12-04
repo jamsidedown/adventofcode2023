@@ -1,16 +1,18 @@
 include Stdlib.List
 
+let id (x: 'a) : 'a = x;;
+
 let rec last (lst: 'a list) : 'a option =
     match lst with
     | [] -> None
     | [ last' ] -> Some last'
     | _ :: t -> last t;;
 
-let rec choose (lst: 'a option list) : 'a list =
+let rec choose ?f:(f=id) (lst: 'a option list) : 'a list =
     match lst with
     | [] -> []
-    | Some head :: tail -> head :: choose tail
-    | None :: tail -> choose tail;;
+    | Some head :: tail -> f head :: choose ~f:f tail
+    | None :: tail -> choose ~f:f tail;;
 
 let sum (lst: int list) : int =
     let rec recurse (acc: int) (remaining: int list) : int =
