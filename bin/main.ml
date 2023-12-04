@@ -28,5 +28,7 @@ let () =
     | _ :: tail -> tail)
     |> List.iter (fun day ->
         match SolutionMap.find_opt day solutions with
-        | Some day_module -> day_module()
+        | Some day_module ->
+            Printf.printf "Day %s\n" day;
+            day_module()
         | None -> Printf.printf "No match for day %s\n" day)
