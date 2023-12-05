@@ -43,18 +43,18 @@ let test_can_parse_sample_seeds _ =
     assert_equal seeds [79; 14; 55; 13];;
 
 let test_can_apply_first_sample_range _ =
-    let range: Day05.range = {dest=50; src=98; length=2} in
-    assert_equal (Day05.apply_range range 97) None;
-    assert_equal (Day05.apply_range range 98) (Some 50);
-    assert_equal (Day05.apply_range range 99) (Some 51);
-    assert_equal (Day05.apply_range range 100) None;;
+    let conversion: Day05.conversion = {range=Range.from_start 98 2; transform = -48} in
+    assert_equal (Day05.apply_conversion conversion 97) None;
+    assert_equal (Day05.apply_conversion conversion 98) (Some 50);
+    assert_equal (Day05.apply_conversion conversion 99) (Some 51);
+    assert_equal (Day05.apply_conversion conversion 100) None;;
 
 let test_can_apply_first_sample_map _ =
     let map: Day05.map = {
         name="seed-to-soil";
-        ranges=[
-            {dest=50; src=98; length=2};
-            {dest=52; src=50; length=48}
+        conversions=[
+            {range=Range.from_start 98 2; transform = -48};
+            {range=Range.from_start 50 48; transform = 2}
         ]
     } in
     assert_equal (Day05.apply_map map 97) 99;
@@ -64,8 +64,8 @@ let test_can_apply_first_sample_map _ =
 
 let test_can_parse_first_sample_range _ =
     let line = "50 98 2" in
-    let range = Day05.parse_range line in
-    assert_equal range (Some {dest=50; src=98; length=2});;
+    let conversion = Day05.parse_conversion line in
+    assert_equal conversion (Some {range=Range.init 98 99; transform= -48});;
 
 let test_can_parse_first_sample_name _ =
     let line = "seed-to-soil map:" in
@@ -80,12 +80,12 @@ let test_can_parse_first_sample_map _ =
     ] in
     let maps = Day05.parse_maps lines in
     match maps with
-    | [m] ->
-        assert_equal m.name "seed-to-soil";
-        (match m.ranges with
+    | [s] ->
+        assert_equal s.name "seed-to-soil";
+        (match s.conversions with
         | [a; b] ->
-            assert_equal a {dest=50; src=98; length=2};
-            assert_equal b {dest=52; src=50; length=48}
+            assert_equal a {range=Range.from_start 98 2; transform = -48};
+            assert_equal b {range=Range.from_start 50 48; transform = 2}
         | _ -> assert false)
     | _ -> assert false;;
 
@@ -93,7 +93,28 @@ let test_can_solve_part_one _ =
     let result = Day05.part_one sample_input in
     assert_equal result 35;;
 
+let test_can_parse_seed_ranges _ =
+    let line = "seeds: 79 14 55 13" in
+    match Day05.parse_seed_ranges line with
+    | [first; second] ->
+        assert_equal first {start=79; stop=92};
+        assert_equal second {start=55; stop=67}
+    | _ -> assert false;;
 
+let test_can_apply_first_map_to_seed_ranges _ =
+    let seed_ranges = Day05.parse_seed_ranges "seeds: 79 14 55 13"in
+    let maps = Day05.parse_maps [ "seed-to-soil map:"; "50 98 2"; "52 50 48"] in
+    let applied = Day05.apply_maps_to_seed_ranges maps seed_ranges in
+    (* applied |> List.iter Range.print; *)
+    assert_equal applied [
+        Range.init 81 94;
+        Range.init 57 69
+    ];;
+
+let test_can_solve_part_two _ =
+    let result = Day05.part_two sample_input in
+    (* Printf.printf "Result: %i\n" result; *)
+    assert_equal result 46;;
 
 let tests =
     "day 5" >::: [
@@ -104,4 +125,7 @@ let tests =
         "can parse first sample name" >:: test_can_parse_first_sample_name;
         "can parse first sample map" >:: test_can_parse_first_sample_map;
         "can solve part one with the sample data" >:: test_can_solve_part_one;
+        "can parse seed ranges " >:: test_can_parse_seed_ranges;
+        "can apply first map to sample seed ranges" >:: test_can_apply_first_map_to_seed_ranges;
+        "can solve part two with the sample data" >:: test_can_solve_part_two;
     ]
