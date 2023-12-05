@@ -94,9 +94,9 @@ let apply_conversion_to_seed_range (conversion: conversion) (seed: Range.range) 
         (None, [seed])
     (* overlaps range *)
     | c, s when s.start < c.start && s.stop > c.stop ->
-        (Some (Range.init (s.start + diff) (s.stop + diff)),
+        (Some (Range.init (c.start + diff) (c.stop + diff)),
         [
-            Range.init s.start (s.start -1);
+            Range.init s.start (c.start -1);
             Range.init (c.stop + 1) s.stop
         ])
     (* completely within range *)
@@ -128,6 +128,8 @@ let apply_map_to_seed_range (map: map) (seed: Range.range) : Range.range list =
 let rec apply_maps_to_seed_ranges (maps: map list) (seeds: Range.range list) : Range.range list =
     match maps with
     | map :: tail ->
+        (* Printf.printf "\nSeeds in map %s:\n" map.name; *)
+        (* seeds |> List.iter Range.print; *)
         seeds
         |> List.map (apply_map_to_seed_range map)
         |> List.concat
@@ -138,13 +140,16 @@ let part_two (lines: string list) : int =
     match lines with
     | [] -> 0
     | head :: tail ->
-        let seed_ranges = parse_seed_ranges head in
-        (* seed_ranges |> List.iter Range.print; *)
+        let seeds =
+            parse_seed_ranges head in
+        (* seeds |> List.iter Range.print; *)
         let maps = tail |> parse_maps in
-        apply_maps_to_seed_ranges maps seed_ranges
+        apply_maps_to_seed_ranges maps seeds
         |> List.map (fun (r: Range.range) -> r.start)
-        |> List.sort compare
-        |> List.hd;;
+        |> List.min
+        |> function
+            | None -> -1
+            | Some min -> min;;
 
 let run () =
     let input = File.read_lines "day05.txt" in

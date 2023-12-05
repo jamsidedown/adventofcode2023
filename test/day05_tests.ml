@@ -111,6 +111,54 @@ let test_can_apply_first_map_to_seed_ranges _ =
         Range.init 57 69
     ];;
 
+let test_can_apply_range_conversion_when_no_overlap_left _ =
+    let seed_range = Range.init 1 4 in
+    let conversion: Day05.conversion = {range=Range.init 5 6; transform=10} in
+    let applied = Day05.apply_conversion_to_seed_range conversion seed_range in
+    assert_equal applied (None, [seed_range]);;
+
+let test_can_apply_range_conversion_when_no_overlap_right _ =
+    let seed_range = Range.init 7 10 in
+    let conversion: Day05.conversion = {range=Range.init 5 6; transform=10} in
+    let applied = Day05.apply_conversion_to_seed_range conversion seed_range in
+    assert_equal applied (None, [seed_range]);;
+
+let test_can_apply_range_conversion_when_seed_range_encompasses_conversion _ =
+    let seed_range = Range.init 1 10 in
+    let conversion: Day05.conversion = {range=Range.init 4 6; transform=10} in
+    let applied = Day05.apply_conversion_to_seed_range conversion seed_range in
+    assert_equal applied (
+        Some (Range.init 14 16),
+        [
+            Range.init 1 3;
+            Range.init 7 10
+        ]
+    );;
+
+let test_can_apply_range_conversion_when_conversion_encompasses_seeds _ =
+    let seed_range = Range.init 4 6 in
+    let conversion: Day05.conversion = {range=Range.init 1 10; transform=10} in
+    let applied = Day05.apply_conversion_to_seed_range conversion seed_range in
+    assert_equal applied (Some (Range.init 14 16), []);;
+
+let test_can_apply_range_conversion_when_right_side_of_seeds_in_range _ =
+    let seed_range = Range.init 1 10 in
+    let conversion: Day05.conversion = {range=Range.init 6 10; transform=10} in
+    let applied = Day05.apply_conversion_to_seed_range conversion seed_range in
+    assert_equal applied (
+        Some (Range.init 16 20),
+        [Range.init 1 5;]
+    );;
+
+let test_can_apply_range_conversion_when_left_side_of_seeds_in_range _ =
+    let seed_range = Range.init 1 10 in
+    let conversion: Day05.conversion = {range=Range.init 1 5; transform=10} in
+    let applied = Day05.apply_conversion_to_seed_range conversion seed_range in
+    assert_equal applied (
+        Some (Range.init 11 15),
+        [Range.init 6 10;]
+    );;
+
 let test_can_solve_part_two _ =
     let result = Day05.part_two sample_input in
     (* Printf.printf "Result: %i\n" result; *)
@@ -127,5 +175,11 @@ let tests =
         "can solve part one with the sample data" >:: test_can_solve_part_one;
         "can parse seed ranges " >:: test_can_parse_seed_ranges;
         "can apply first map to sample seed ranges" >:: test_can_apply_first_map_to_seed_ranges;
+        "can apply range conversion to seed range when no overlap (left)" >:: test_can_apply_range_conversion_when_no_overlap_left;
+        "can apply range conversion to seed range when no overlap (right)" >:: test_can_apply_range_conversion_when_no_overlap_right;
+        "can apply range conversion when seeds encompass conversion range" >:: test_can_apply_range_conversion_when_seed_range_encompasses_conversion;
+        "can apply range conversion when conversion encompass seed range" >:: test_can_apply_range_conversion_when_conversion_encompasses_seeds;
+        "can apply range conversion when right side of seeds in range" >:: test_can_apply_range_conversion_when_right_side_of_seeds_in_range;
+        "can apply range conversion when left side of seeds in range" >:: test_can_apply_range_conversion_when_left_side_of_seeds_in_range;
         "can solve part two with the sample data" >:: test_can_solve_part_two;
     ]

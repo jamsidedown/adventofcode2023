@@ -24,3 +24,23 @@ let sum (lst: int list) : int =
 
 let[@tail_mod_cons] rec range (start: int) (stop: int) : int list =
     if start > stop then [] else start :: range (start + 1) stop;;
+
+let min (lst: int list) : int option =
+    let rec recurse (curr: int) (remaining: int list) : int =
+        match remaining with
+        | [] -> curr
+        | head :: tail -> recurse (min head curr) tail
+    in
+    match lst with
+    | [] -> None
+    | head :: tail -> Some (recurse head tail);;
+
+let max (lst: int list) : int option =
+    let rec recurse (curr: int) (remaining: int list) : int =
+        match remaining with
+        | [] -> curr
+        | head :: tail -> recurse (max head curr) tail
+    in
+    match lst with
+    | [] -> None
+    | head :: tail -> Some (recurse head tail);;
