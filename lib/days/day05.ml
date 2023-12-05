@@ -142,7 +142,6 @@ let part_two (lines: string list) : int =
     | head :: tail ->
         let seeds =
             parse_seed_ranges head in
-        (* seeds |> List.iter Range.print; *)
         let maps = tail |> parse_maps in
         apply_maps_to_seed_ranges maps seeds
         |> List.map (fun (r: Range.range) -> r.start)

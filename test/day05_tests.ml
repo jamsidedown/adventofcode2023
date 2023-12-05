@@ -105,7 +105,6 @@ let test_can_apply_first_map_to_seed_ranges _ =
     let seed_ranges = Day05.parse_seed_ranges "seeds: 79 14 55 13"in
     let maps = Day05.parse_maps [ "seed-to-soil map:"; "50 98 2"; "52 50 48"] in
     let applied = Day05.apply_maps_to_seed_ranges maps seed_ranges in
-    (* applied |> List.iter Range.print; *)
     assert_equal applied [
         Range.init 81 94;
         Range.init 57 69
@@ -161,7 +160,6 @@ let test_can_apply_range_conversion_when_left_side_of_seeds_in_range _ =
 
 let test_can_solve_part_two _ =
     let result = Day05.part_two sample_input in
-    (* Printf.printf "Result: %i\n" result; *)
     assert_equal result 46;;
 
 let tests =
