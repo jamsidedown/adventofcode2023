@@ -11,6 +11,12 @@ let test_can_parse_time _ =
     let numbers = Day06.parse_numbers input in
     assert_equal numbers [7; 15; 30];;
 
+let test_first_race _ =
+    let time = 7 in
+    let distance = 9 in
+    let result = Day06.race time distance in
+    assert_equal result {start=2; stop=5};;
+
 let test_can_solve_part_one_with_sample_input _ =
     let result = Day06.part_one sample_input in
     assert_equal result 288;;
@@ -27,6 +33,7 @@ let test_can_solve_part_two_with_sample_input _ =
 let tests =
     "day 5" >::: [
         "can parse time" >:: test_can_parse_time;
+        "can solve first race" >:: test_first_race;
         "can solve part one for sample input" >:: test_can_solve_part_one_with_sample_input;
         "can parse single time" >:: test_can_parse_single_time;
         "can solve part two for sample input" >:: test_can_solve_part_two_with_sample_input;

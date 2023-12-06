@@ -19,23 +19,14 @@ let parse_single_number (line: string) : int option =
         |> int_of_string_opt
     | _ -> None;;
 
-let first_winning_time (time_limit: int) (distance_record: int) : int =
-    let rec recurse (time: int) : int =
-        let distance = (time_limit - time) * time in
-        if distance > distance_record then time else recurse (time + 1)
-    in
-    recurse 0;;
-
-let last_winning_time (time_limit: int) (distance_record: int) : int =
-    let rec recurse (time: int) : int =
-        let distance = (time_limit - time) * time in
-        if distance > distance_record then time else recurse (time - 1)
-    in
-    recurse time_limit;;
-
 let race (time_limit: int) (distance_record: int) : Range.range =
-    let start = first_winning_time time_limit distance_record in
-    let stop = last_winning_time time_limit distance_record in
+    let t = float_of_int time_limit in
+    let d = float_of_int distance_record in
+    let root = sqrt ((Float.pow t 2.) -. (4. *. d)) in
+    let x1 = (t +. root) /. 2. in
+    let x2 = (t -. root) /. 2. in
+    let start = x2 |> int_of_float |> (fun x -> x + 1) in
+    let stop = Float.ceil x1 |> int_of_float |> (fun x -> x - 1) in
     Range.init start stop;;
 
 let part_one (lines: string list) : int =
