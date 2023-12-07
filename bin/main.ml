@@ -9,6 +9,7 @@ let solutions = [
     ("4", Day04.run);
     ("5", Day05.run);
     ("6", Day06.run);
+    ("7", Day07.run);
 ]
 |> List.to_seq
 |> SolutionMap.of_seq

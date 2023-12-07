@@ -31,7 +31,7 @@ let test_can_solve_part_two_with_sample_input _ =
     assert_equal result 71503;;
 
 let tests =
-    "day 5" >::: [
+    "day 6" >::: [
         "can parse time" >:: test_can_parse_time;
         "can solve first race" >:: test_first_race;
         "can solve part one for sample input" >:: test_can_solve_part_one_with_sample_input;
