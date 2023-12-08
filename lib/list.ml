@@ -8,6 +8,12 @@ let rec last (lst: 'a list) : 'a option =
     | [ last' ] -> Some last'
     | _ :: t -> last t;;
 
+let rec take (count: int) (lst: 'a list) : 'a list =
+    if count < 1 then [] else
+    match lst with
+    | [] -> []
+    | head :: tail -> head :: take (count - 1) tail;;
+
 let rec choose ?f:(f=id) (lst: 'a option list) : 'a list =
     match lst with
     | [] -> []

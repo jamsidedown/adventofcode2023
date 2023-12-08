@@ -1,12 +1,25 @@
 open OUnit2
 open Aoc23
 
-let sample_input = [
+let part_one_sample_input = [
     "LLR";
     "";
     "AAA = (BBB, BBB)";
     "BBB = (AAA, ZZZ)";
     "ZZZ = (ZZZ, ZZZ)"
+];;
+
+let part_two_sample_input = [
+    "LR";
+    "";
+    "11A = (11B, XXX)";
+    "11B = (XXX, 11Z)";
+    "11Z = (11B, XXX)";
+    "22A = (22B, XXX)";
+    "22B = (22C, 22C)";
+    "22C = (22Z, 22Z)";
+    "22Z = (22B, 22B)";
+    "XXX = (XXX, XXX)"
 ];;
 
 let test_can_parse_directions _ =
@@ -36,7 +49,11 @@ let test_can_parse_network _ =
     assert_equal (Day08.NetworkMap.find "ZZZ" network) ("ZZZ", "ZZZ");;
 
 let test_can_solve_part_one _ =
-    let result = Day08.part_one sample_input in
+    let result = Day08.part_one part_one_sample_input in
+    assert_equal result 6;;
+
+let test_can_solve_part_two _ =
+    let result = Day08.part_two part_two_sample_input in
     assert_equal result 6;;
 
 let tests =
@@ -45,4 +62,5 @@ let tests =
         "can parse network node" >:: test_can_parse_network_node;
         "can parse network" >:: test_can_parse_network;
         "can solve part one" >:: test_can_solve_part_one;
+        "can solve part two" >:: test_can_solve_part_two;
     ]
