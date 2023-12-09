@@ -10,16 +10,11 @@ let rec get_differences (values: int list) : int list =
     | a :: b :: tail -> (b - a) :: get_differences (b :: tail)
     | _ -> [];;
 
-let extrapolate (values: int list) : int =
-    let rec recurse (current: int list) : int =
-        match current |> List.for_all (fun x -> x = 0) with
-        | true -> 0
-        | false ->
-            match List.rev current with
-            | head :: _ -> head + (get_differences current |> recurse)
-            | [] -> 0
-    in
-    recurse values;;
+let rec extrapolate (values: int list) : int =
+    if List.for_all (fun x -> x = 0) values then 0
+    else match List.rev values with
+    | head :: _ -> head + (get_differences values |> extrapolate)
+    | [] -> 0;;
 
 let part_one (lines: string list) : int =
     lines
