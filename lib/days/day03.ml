@@ -1,3 +1,6 @@
+open Coord
+type coord = Coord.t
+
 type number = {
     value: int;
     line: int;
@@ -55,13 +58,13 @@ let read_symbols (line: string) (line_number: int) : symbol list =
     in
     recurse [] 0 (String.to_list line);;
 
-let coords_of_number (number: number) : Coord.coord list =
+let coords_of_number (number: number) : coord list =
     List.range number.start number.stop
     |> List.map (fun x ->
-        let c: Coord.coord = {x=x; y=number.line} in
+        let c: coord = {x=x; y=number.line} in
         c);;
 
-let coord_of_symbol (symbol: symbol) : Coord.coord =
+let coord_of_symbol (symbol: symbol) : coord =
     {x=symbol.position; y=symbol.line};;
 
 let sum_numbers (numbers: number list) : int =

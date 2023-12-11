@@ -2,7 +2,7 @@ open Aoc23
 
 module SolutionMap = Map.Make (String)
 
-let solutions = [
+let solution_list = [
     ("1", Day01.run);
     ("2", Day02.run);
     ("3", Day03.run);
@@ -12,22 +12,26 @@ let solutions = [
     ("7", Day07.run);
     ("8", Day08.run);
     ("9", Day09.run);
-]
-|> List.to_seq
-|> SolutionMap.of_seq
+    ("10", Day10.run);
+];;
+
+let solutions =
+    solution_list
+    |> List.to_seq
+    |> SolutionMap.of_seq;;
 
 let () =
     (match Array.to_list Sys.argv with
     | [] -> []
     | _ :: [] ->
         (* run most recent day *)
-        SolutionMap.to_list solutions
+        solution_list
         |> List.last
         |> (function
             | Some recent -> [fst recent]
             | None -> [])
     | _ :: ["all"] ->
-        SolutionMap.to_list solutions
+        solution_list
         |> List.map fst
     | _ :: tail -> tail)
     |> List.iter (fun day ->
