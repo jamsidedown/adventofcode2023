@@ -15,8 +15,11 @@ module Coord = struct
     let add (a: t) (b: t) : t =
         {x=a.x + b.x; y=a.y + b.y};;
 
-    let minus (a: t) (b: t) =
+    let minus (a: t) (b: t) : t =
         {x=a.x - b.x; y=a.y - b.y};;
+
+    let distance (a: t) (b: t) : int =
+        (abs (a.x - b.x)) + (abs (a.y - b.y));;
 
     let to_string (c: t) : string =
         Printf.sprintf "(%i, %i)" c.x c.y;;

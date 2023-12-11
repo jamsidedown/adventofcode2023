@@ -12,6 +12,7 @@ let tests =
 		Day08_tests.tests;
 		Day09_tests.tests;
 		Day10_tests.tests;
+		Day11_tests.tests;
 	]
 
 let _ = run_test_tt_main tests

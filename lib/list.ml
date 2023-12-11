@@ -41,6 +41,11 @@ let min (lst: int list) : int option =
     | [] -> None
     | head :: tail -> Some (recurse head tail);;
 
+let min_of (transform: 'a -> int) (lst: 'a list) : int option =
+    lst
+    |> Stdlib.List.map transform
+    |> min;;
+
 let max (lst: int list) : int option =
     let rec recurse (curr: int) (remaining: int list) : int =
         match remaining with
@@ -50,3 +55,8 @@ let max (lst: int list) : int option =
     match lst with
     | [] -> None
     | head :: tail -> Some (recurse head tail);;
+
+let max_of (transform: 'a -> int) (lst: 'a list) : int option =
+    lst
+    |> Stdlib.List.map transform
+    |> max;;
