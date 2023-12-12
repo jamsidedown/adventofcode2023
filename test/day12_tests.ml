@@ -103,6 +103,6 @@ let tests =
         "third sample generates one arrangement" >:: test_third_sample_generates_one_arrangement;
         "fourth sample generates one arrangement" >:: test_fourth_sample_generates_one_arrangement;
         "fifth sample generates four arrangements" >:: test_fifth_sample_generates_four_arrangements;
-        "fiftsixthh sample generates ten arrangements" >:: test_sixth_sample_generates_ten_arrangements;
+        "sixth sample generates ten arrangements" >:: test_sixth_sample_generates_ten_arrangements;
         "can solve part one with sample input" >:: test_can_solve_part_one;
     ]
