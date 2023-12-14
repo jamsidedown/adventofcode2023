@@ -121,7 +121,7 @@ let part_two (lines: string list) : int =
     |> List.mapi (fun i line ->
         let springs, groups = parse_line ~repeat:5 line in
         let result = generate_matches springs groups in
-        Printf.printf "Finished line %i, %i arrangements\n" i (List.length result);
+        Printf.printf "Finished line %i, %i arrangements\n%!" i (List.length result);
         result)
     |> List.concat
     |> List.length;;
