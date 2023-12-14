@@ -29,9 +29,12 @@ let parse_groups (groups: string) : int list =
     |> String.split_on_char ','
     |> List.map int_of_string;;
 
-let parse_line (line: string) : springs * (int list) =
+let parse_line ?repeat:(repeat=1) (line: string) : springs * (int list) =
     match String.split_on_char ' ' line with
-    | [springs; groups] -> (parse_springs springs, parse_groups groups)
+    | [springs; groups] ->
+        let springs_rep = String.repeat repeat "?" springs in
+        let groups_rep = String.repeat repeat "," groups in
+        (parse_springs springs_rep, parse_groups groups_rep)
     | _ -> [], [];;
 
 let rec matches_springs (truth: springs) (to_test: springs) : bool =
@@ -113,8 +116,15 @@ let part_one (lines: string list) : int =
     |> List.concat
     |> List.length;;
 
-let part_two (_: string list) : int =
-    0;;
+let part_two (lines: string list) : int =
+    lines
+    |> List.mapi (fun i line ->
+        let springs, groups = parse_line ~repeat:5 line in
+        let result = generate_matches springs groups in
+        Printf.printf "Finished line %i, %i arrangements\n" i (List.length result);
+        result)
+    |> List.concat
+    |> List.length;;
 
 let run () =
     let input = File.read_lines "day12.txt" in

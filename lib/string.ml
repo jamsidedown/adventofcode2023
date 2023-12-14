@@ -20,3 +20,8 @@ let get_all_matches (pattern: Str.regexp) (input: string) : string list =
         | exception Not_found -> []
     in
     recurse 0;;
+
+let repeat (times: int) (connector: string) (s: string) : string =
+    List.range 1 times
+    |> List.map (fun _ -> s)
+    |> Stdlib.String.concat connector;;
