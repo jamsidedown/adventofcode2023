@@ -121,10 +121,10 @@ let part_two (lines: string list) : int =
     |> List.mapi (fun i line ->
         let springs, groups = parse_line ~repeat:5 line in
         let result = generate_matches springs groups in
-        Printf.printf "Finished line %i, %i arrangements\n%!" i (List.length result);
-        result)
-    |> List.concat
-    |> List.length;;
+        let length = List.length result in
+        Printf.printf "Finished line %i, %i arrangements\n%!" i length;
+        length)
+    |> List.sum;;
 
 let run () =
     let input = File.read_lines "day12.txt" in
