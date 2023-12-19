@@ -21,23 +21,18 @@ public class Program
 
     private static long PartTwo(string[] lines)
     {
-        var counts = lines
+        return lines
             .Select(line => ConditionRecord.Parse(line, 5))
-            .Select((rec, index) =>
-            {
-                var matches = CountMatches(rec.Springs.AsSpan(), rec.Groups);
-                Console.WriteLine($"Line {index + 1}, {matches} arrangement(s)");
-                return matches;
-            })
-            .ToArray();
-        return counts.Sum();
+            .AsParallel()
+            .Select(rec => CountMatches(rec.Springs.AsSpan(), rec.Groups))
+            .Sum();
     }
 
     private static long CountMatches(ReadOnlySpan<Condition> template, int[] groups)
     {
         if (template.Length == 0)
             return groups.Length > 0 ? 0L : 1L;
-        
+
         if (groups.Length == 0)
         {
             foreach (var condition in template)
@@ -48,22 +43,22 @@ public class Program
 
             return 1L;
         }
-        
-        var largestIndex = GetLargestIndex(groups);
-        var largestGroup = groups[largestIndex];
-        
-        var leftGroups = groups[..largestIndex];
-        var rightGroups = groups[(largestIndex + 1)..];
+
+        var middleIndex = groups.Length / 2;
+        var middleGroup = groups[middleIndex];
+
+        var leftGroups = groups[..middleIndex];
+        var rightGroups = groups[(middleIndex + 1)..];
 
         var leftBuffer = leftGroups.Sum() + leftGroups.Length;
         var rightBuffer = rightGroups.Sum() + rightGroups.Length;
         
         var count = 0L;
 
-        var stop = template.Length - rightBuffer - largestGroup;
+        var stop = template.Length - rightBuffer - middleGroup;
         for (var start = leftBuffer; start <= stop; start++)
         {
-            var end = start + largestGroup;
+            var end = start + middleGroup;
             var sub = template[start..end];
 
             if (!NoneOperational(sub))
@@ -71,27 +66,22 @@ public class Program
 
             if (start > 0 && template[start - 1] == Condition.Damaged)
                 continue;
-            
+
             if (end < template.Length && template[end] == Condition.Damaged)
                 continue;
-            
+
             var leftSprings = template[..(start > 0 ? start - 1 : 0)];
             var rightSprings = template[(end < (template.Length - 1) ? end + 1 : end)..];
             var leftCount = CountMatches(leftSprings, leftGroups);
+
+            if (leftCount == 0L)
+                continue;
+
             var rightCount = CountMatches(rightSprings, rightGroups);
             count += leftCount * rightCount;
         }
-        
+
         return count;
-    }
-
-    private static bool CanFit(ReadOnlySpan<Condition> springs, int length)
-    {
-        if (springs.Length == length)
-            return NoneOperational(springs);
-
-        var isBuffer = springs[length] != Condition.Damaged;
-        return isBuffer && NoneOperational(springs[..length]);
     }
 
     private static bool NoneOperational(ReadOnlySpan<Condition> springs)
@@ -102,70 +92,6 @@ public class Program
                 return false;
         }
     
-        return true;
-    }
-    
-    private static int GetLargestIndex(int[] groups)
-    {
-        var largest = 0;
-        var index = 0;
-
-        for (var i = 0; i < groups.Length; i++)
-        {
-            if (groups[i] > largest)
-            {
-                largest = groups[i];
-                index = i;
-            }
-        }
-
-        return index;
-    }
-
-    private static bool AreSpringsValid(Condition[] truth, Condition[] conditions)
-    {
-        if (truth.Length != conditions.Length)
-            return false;
-
-        for (var i = 0; i < truth.Length; i++)
-        {
-            if (truth[i] == Condition.Damaged && conditions[i] != Condition.Damaged)
-                return false;
-
-            if (truth[i] == Condition.Operational && conditions[i] != Condition.Operational)
-                return false;
-        }
-        
-        return true;
-    }
-
-    private static bool AreGroupsValid(int[] truth, Condition[] springs)
-    {
-        var groups = new List<int>();
-        var counter = 0;
-
-        foreach (var spring in springs)
-        {
-            if (spring == Condition.Damaged)
-            {
-                counter++;
-            }
-            else if (spring == Condition.Operational && counter > 0)
-            {
-                groups.Add(counter);
-                counter = 0;
-            }
-        }
-
-        if (groups.Count != truth.Length)
-            return false;
-
-        for (var i = 0; i < truth.Length; i++)
-        {
-            if (truth[i] != groups[i])
-                return false;
-        }
-
         return true;
     }
 }
