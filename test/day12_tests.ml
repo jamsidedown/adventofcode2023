@@ -89,10 +89,6 @@ let test_can_solve_part_one _ =
     let result = Day12.part_one sample_input in
     assert_equal result 21;;
 
-let test_can_solve_part_two _ =
-    let result = Day12.part_two sample_input in
-    assert_equal result 525152;;
-
 let tests =
     "day 12" >::: [
         "can parse first line in sample" >:: test_can_parse_first_line_in_sample;
@@ -109,5 +105,4 @@ let tests =
         "fifth sample generates four arrangements" >:: test_fifth_sample_generates_four_arrangements;
         "sixth sample generates ten arrangements" >:: test_sixth_sample_generates_ten_arrangements;
         "can solve part one with sample input" >:: test_can_solve_part_one;
-        "can solve part two with sample input" >:: test_can_solve_part_two;
     ]

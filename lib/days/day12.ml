@@ -116,17 +116,10 @@ let part_one (lines: string list) : int =
     |> List.concat
     |> List.length;;
 
-let part_two (lines: string list) : int =
-    lines
-    |> List.mapi (fun i line ->
-        let springs, groups = parse_line ~repeat:5 line in
-        let result = generate_matches springs groups in
-        let length = List.length result in
-        Printf.printf "Finished line %i, %i arrangements\n%!" i length;
-        length)
-    |> List.sum;;
+let part_two (_: string list) : int =
+    0;;
 
 let run () =
     let input = File.read_lines "day12.txt" in
     input |> part_one |> Printf.printf "Part one: %i\n";
-    input |> part_two |> Printf.printf "Part two: %i\n";;
+    input |> part_two |> Printf.printf "Part two (solved in ./dotnet/DayTwelve): %i\n";;

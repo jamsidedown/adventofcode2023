@@ -1,10 +1,9 @@
-﻿namespace StuckOnDayTwelve;
+﻿namespace DayTwelve;
 
 public class Program
 {
     public static void Main()
     {
-        Console.WriteLine(Directory.GetCurrentDirectory());
         var lines = File.ReadAllLines("../../input/day12.txt");
         Console.WriteLine($"Part one: {PartOne(lines)}");
         Console.WriteLine($"Part two: {PartTwo(lines)}");
