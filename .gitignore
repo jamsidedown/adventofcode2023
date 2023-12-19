@@ -33,3 +33,7 @@ _opam/
 
 # AoC inputs
 input/
+
+# .Net solutions
+dotnet/**/obj
+dotnet/**/bin
