@@ -10,6 +10,8 @@ Rather than each day having its own directory with an executable script, I'm goi
 
 I'm using Visual Studio Code as my IDE with the `OCaml Platform` plugin.
 
+When I'm stuck I've fallen back on C#.
+
 ### Software versions
 
 ```sh
@@ -21,6 +23,9 @@ $ dune --version
 
 $ opam --version
 2.1.5
+
+$ dotnet --version
+8.0.100
 ```
 
 ## Building
@@ -43,6 +48,8 @@ $ dune test
 >
 > Naming convention is `day01.txt`, `day02.txt`, etc.
 
+### OCaml
+
 ```sh
 # to run most recent day
 $ dune exec aoc23
@@ -52,4 +59,15 @@ $ dune exec aoc23 1 2 3
 
 # to run all days
 $ dune exec aoc23 all
+```
+
+### C#
+
+For the days where I've got stuck with OCaml, each individual day's dotnet project can be built and run.
+
+```sh
+cd dotnet/DayTwelve
+dotnet restore
+dotnet build
+dotnet run
 ```
