@@ -66,6 +66,30 @@ let transpose (lst: 'a list list) : 'a list list =
         match remaining with
         | [] -> rev col :: recurse [] [] (rev seen)
         | [] :: _ -> []
-        | (head :: tail) :: rem ->recurse (head :: col) (tail :: seen) rem
+        | (head :: tail) :: rem -> recurse (head :: col) (tail :: seen) rem
     in
     recurse [] [] lst;;
+
+let rotate_cw (lst: 'a list list) : 'a list list =
+    let rec recurse (col: 'a list) (seen: 'a list list) (remaining: 'a list list) : 'a list list =
+        match remaining with
+        | [] -> col :: recurse [] [] (rev seen)
+        | [] :: _ -> []
+        | (head :: tail) :: rem -> recurse (head :: col) (tail :: seen) rem
+    in
+    recurse [] [] lst;;
+
+let rotate_ccw (lst: 'a list list) : 'a list list =
+    lst
+    |> transpose
+    |> rev;;
+
+(*
+   1 2 3
+   4 5 6
+   7 8 9
+
+   3 6 9
+   2 5 8
+   1 4 7
+*)
