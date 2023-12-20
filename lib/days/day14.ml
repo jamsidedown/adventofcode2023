@@ -31,7 +31,7 @@ let parse_platform (lines: string list) : platform =
     |> List.map String.to_list
     |> List.map (List.map parse_space)
 
-(* let rec tilt_row (row: space list) : space list =
+let rec tilt_row (row: space list) : space list =
     let rec recurse (spaces: space list) : space list =
         match spaces with
         | [] -> []
@@ -39,9 +39,9 @@ let parse_platform (lines: string list) : platform =
         | head :: tail -> head :: recurse tail
     in
     let tilted = recurse row in
-    if tilted <> row then tilt_row tilted else row;; *)
+    if tilted <> row then tilt_row tilted else row;;
 
-let tilt_row (row: space list) : space list =
+(* let tilt_row (row: space list) : space list =
     let rec recurse (spaces: space list) : space list =
         match spaces with
         | [] -> []
@@ -58,7 +58,7 @@ let tilt_row (row: space list) : space list =
             tilt_section section @ split_sections [] tail
         | head :: tail -> split_sections (head :: curr) tail
     in
-    split_sections [] row;;
+    split_sections [] row;; *)
 
 let rec tilt_left (platform: platform) : platform =
     match platform with
@@ -72,17 +72,6 @@ let count_right_inclusive (row: space list) : int =
         if space = Round then (length - i) else 0)
     |> List.sum;;
 
-let cycle (platform: platform) : platform =
-    platform
-    |> tilt_left
-    |> List.rotate_cw
-    |> tilt_left
-    |> List.rotate_cw
-    |> tilt_left
-    |> List.rotate_cw
-    |> tilt_left
-    |> List.rotate_cw;;
-
 let part_one (lines: string list) : int =
     lines
     |> parse_platform
@@ -91,19 +80,10 @@ let part_one (lines: string list) : int =
     |> List.map count_right_inclusive
     |> List.sum;;
 
-let part_two (lines: string list) : int =
-    let rec recurse (count: int) (platform: platform) : platform =
-        if count mod 100_000 = 0 then Printf.printf "%i\n%!" count;
-        if count > 0 then recurse (count - 1) (cycle platform) else platform
-    in
-    lines
-    |> parse_platform
-    |> List.rotate_ccw
-    |> recurse 1_000_000_000
-    |> List.map count_right_inclusive
-    |> List.sum;;
+let part_two (_: string list) : int =
+    0;;
 
 let run () =
     let input = File.read_lines "day14.txt" in
     input |> part_one |> Printf.printf "Part one: %i\n";
-    input |> part_two |> Printf.printf "Part two: %i\n";;
+    input |> part_two |> Printf.printf "Part two (solved in ./dotnet/DayFourteen): %i\n";;

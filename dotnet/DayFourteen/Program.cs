@@ -25,26 +25,33 @@ public class Program
     {
         var platform = Platform.Parse(lines);
 
-        var sw = new Stopwatch();
-        sw.Start();
+        var cache = new Dictionary<string, int>();
+        var limit = 1_000_000_000;
         
-        for (var i = 0; i < 1_000_000_000; i++)
+        for (var i = 0; i < limit; i++)
         {
-            if (i % 1_000_000 == 0)
-            {
-                Console.WriteLine($"Iter {i} in {sw.Elapsed.TotalSeconds:.##}s");
-            }
             Platform.Cycle(platform);
+            
+            var s = Platform.AsString(platform);
+            if (cache.TryGetValue(s, out var iter))
+            {
+                var cycle = i - iter;
+                var remaining = limit - i;
+                var reduced = remaining % cycle;
+                i = limit - reduced;
+                cache.Clear();
+            }
+            else
+            {
+                cache.Add(s, i);
+            }
         }
-        
-        sw.Stop();
-        Console.WriteLine($"Finished in {sw.Elapsed.TotalSeconds:.##}");
 
         return Platform.Score(platform);
     }
 }
 
-static class Platform
+internal static class Platform
 {
     public static void Print(Span2D<Tile> platform)
     {
@@ -63,7 +70,45 @@ static class Platform
             Console.WriteLine(new string(line));
         }
     }
-    
+
+    public static string AsString(Span2D<Tile> state)
+    {
+        var i = 0;
+        byte buffer = 0;
+
+        var chars = new List<char>((state.Width * state.Height / 4) + 1);
+        
+        for (var y = 0; y < state.Height; y++)
+        {
+            for (var x = 0; x < state.Width; x++)
+            {
+                if (i % 4 == 0 && i > 0)
+                {
+                    chars.Add(ToHex(buffer));
+                    buffer = 0;
+                }
+
+                if (state[x, y] == Tile.Round)
+                    buffer += (byte)(1 << (i % 4));
+                
+                i++;
+            }
+        }
+
+        if (i % 4 != 0)
+            chars.Add(ToHex(buffer));
+
+        return new string(chars.ToArray());
+    }
+
+    private static char ToHex(byte value) =>
+        value switch
+        {
+            <= 9 => (char)('0' + value),
+            <= 15 => (char)('a' + (value - 10)),
+            _ => throw new ArgumentException("Value must be between 0 and 15 inclusive")
+        };
+
     public static Span2D<Tile> Parse(string[] lines)
     {
         var height = lines.Length;
