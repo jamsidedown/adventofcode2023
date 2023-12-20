@@ -93,13 +93,13 @@ let part_one (lines: string list) : int =
 
 let part_two (lines: string list) : int =
     let rec recurse (count: int) (platform: platform) : platform =
-        if count mod 1_000 = 0 then Printf.printf "%i\n%!" count;
+        if count mod 100_000 = 0 then Printf.printf "%i\n%!" count;
         if count > 0 then recurse (count - 1) (cycle platform) else platform
     in
     lines
     |> parse_platform
     |> List.rotate_ccw
-    |> recurse 1_000
+    |> recurse 1_000_000_000
     |> List.map count_right_inclusive
     |> List.sum;;
 
