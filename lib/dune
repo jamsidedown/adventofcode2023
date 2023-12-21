@@ -2,4 +2,4 @@
 
 (library
  (name aoc23)
- (libraries str))
+ (libraries str unix))

@@ -18,6 +18,7 @@ let solution_list = [
     ("13", Day13.run);
     ("14", Day14.run);
     ("15", Day15.run);
+    ("16", Day16.run);
 ];;
 
 let solutions =

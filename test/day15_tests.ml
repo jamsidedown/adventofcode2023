@@ -15,7 +15,6 @@ let test_can_solve_part_one_for_sample_input _ =
 let test_can_solve_part_two_for_sample_input _ =
     let split = sample_input |> String.split_on_char ',' in
     let result = Day15.part_two split in
-    Printf.printf "Result: %i\n" result;
     assert_equal result 145;;
 
 let tests =
